@@ -1,5 +1,5 @@
 from django.core.paginator import Paginator
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import Word
 
 
@@ -21,4 +21,14 @@ def word_list(request):
         request,
         "learning_app/word_list.html",
         {"page_obj": page_obj}
+    )
+
+
+def detail(request, word_id):
+    word = get_object_or_404(Word, pk=word_id)
+
+    return render(
+        request,
+        "learning_app/detail.html",
+        {"word": word}
     )

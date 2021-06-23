@@ -4,8 +4,8 @@ from django.db import models
 class Word(models.Model):
     english_word = models.CharField(max_length=100)
     polish_word = models.CharField(max_length=100)
-    level_of_knowledge_english = models.IntegerField()
-    level_of_knowledge_polish = models.IntegerField()
+    level_of_knowledge_english = models.IntegerField(default=1)
+    level_of_knowledge_polish = models.IntegerField(default=1)
 
     def __str__(self):
         return f"{self.english_word} {self.level_of_knowledge_english} -" \

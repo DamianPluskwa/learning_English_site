@@ -10,7 +10,7 @@
 {% if page_obj %}
 <ul>
   {% for word in page_obj %}
-  <li>{{ word }}</li>
+  <li><a href="{% url 'learning_app:detail' word.id %}">{{ word }}</a></li>
   {% endfor %}
 </ul>
 {% else %}
@@ -37,4 +37,6 @@
         {% endif %}
     </span>
 </div>
+
+<p><a href="{% url 'learning_app:menu' %}">Menu</a></p>
 {% endblock %}
