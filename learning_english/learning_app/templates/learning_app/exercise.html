@@ -1,0 +1,31 @@
+{% extends "learning_app/base.html" %}
+
+{% block title %}Zadania{% endblock %}
+
+{% block content %}
+<h1>Zadania</h1>
+
+{% if words %}
+<h2>Podaj wyraz angieslki</h2>
+<ul>
+    {% for word in words %}
+    <li>
+        {{ word.polish_word }}
+    </li>
+    {% endfor %}
+</ul>
+
+<h2>Podaj wyraz polski</h2>
+<ul>
+    {% for word in words %}
+    <li>
+        {{ word.english_word }}
+    </li>
+    {% endfor %}
+</ul>
+
+{% else %}
+<h2>Brak zadań na dzisiaj</h2>
+{% endif %}
+
+{% endblock %}

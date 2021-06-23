@@ -32,3 +32,13 @@ def detail(request, word_id):
         "learning_app/detail.html",
         {"word": word}
     )
+
+
+def exercise(request):
+    words_all = Word.objects.all()
+
+    return render(
+        request,
+        "learning_app/exercise.html",
+        {"words": words_all}
+    )
