@@ -35,7 +35,10 @@ def detail(request, word_id):
 
 
 def exercise(request):
-    words_all = Word.objects.all()
+    if request.method == 'POST':
+        pass
+    else:
+        words_all = Word.objects.all()
 
     return render(
         request,

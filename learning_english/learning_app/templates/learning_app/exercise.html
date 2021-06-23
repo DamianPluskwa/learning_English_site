@@ -6,23 +6,33 @@
 <h1>Zadania</h1>
 
 {% if words %}
-<h2>Podaj wyraz angieslki</h2>
-<ul>
-    {% for word in words %}
-    <li>
-        {{ word.polish_word }}
-    </li>
-    {% endfor %}
-</ul>
+<form>
+    <fieldset>
+        {% csrf_token %}
+        <h2>Podaj wyraz angieslki</h2>
+        <ul>
+            {% for word in words %}
+            <li>
+                <legend>{{ word.polish_word }}</legend>
+                <input type="text">
+            </li>
+            {% endfor %}
+        </ul>
 
-<h2>Podaj wyraz polski</h2>
-<ul>
-    {% for word in words %}
-    <li>
-        {{ word.english_word }}
-    </li>
-    {% endfor %}
-</ul>
+        <hr>
+
+        <h2>Podaj wyraz polski</h2>
+        <ul>
+            {% for word in words %}
+            <li>
+                <legend>{{ word.english_word }}</legend>
+                <input type="text">
+            </li>
+            {% endfor %}
+        </ul>
+        <input type="submit" value="Wyślij">
+    </fieldset>
+</form>
 
 {% else %}
 <h2>Brak zadań na dzisiaj</h2>
