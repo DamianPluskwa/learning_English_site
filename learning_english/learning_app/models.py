@@ -7,6 +7,10 @@ class Word(models.Model):
     level_of_knowledge_english = models.IntegerField()
     level_of_knowledge_polish = models.IntegerField()
 
+    def __str__(self):
+        return f"{self.english_word} {self.level_of_knowledge_english} -" \
+               f" {self.level_of_knowledge_polish} {self.polish_word}"
+
 
 class Answer(models.Model):
     word = models.ForeignKey(Word, on_delete=models.CASCADE)
