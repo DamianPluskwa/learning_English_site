@@ -1,5 +1,6 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
+
 from .models import Word
 
 
@@ -36,12 +37,31 @@ def detail(request, word_id):
 
 def exercise(request):
     if request.method == 'POST':
-        pass
+        words_all = (Word.objects.get(id=1), Word.objects.get(id=2))
+
+        print('-'*20)
+        print('wysłane', request.POST)
+        print('-' * 20)
+
+        form = request.POST['text']
+        print(form)
+        print('-' * 20)
+        form = request.POST['text']
+        print(form)
+        print('-' * 20)
+        answer_1 = request.POST[words_all[0].english_word]
+        print(answer_1)
+        print('-' * 20)
+
     else:
-        words_all = Word.objects.all()
+        # words_all = Word.objects.all()
+
+        words_all = (Word.objects.get(id=1), Word.objects.get(id=2))
 
     return render(
         request,
         "learning_app/exercise.html",
-        {"words": words_all}
+        {
+            "words": words_all
+        }
     )
