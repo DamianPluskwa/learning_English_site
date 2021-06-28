@@ -1,7 +1,7 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
 
-from .models import Word
+from .models import Word, Answer
 
 
 def menu(request):
@@ -10,7 +10,6 @@ def menu(request):
         "learning_app/menu.html",
         {}
     )
-
 
 def word_list(request):
     words_all = Word.objects.all()
@@ -39,19 +38,32 @@ def exercise(request):
     if request.method == 'POST':
         words_all = (Word.objects.get(id=1), Word.objects.get(id=2))
 
-        print('-'*20)
-        print('wysłane', request.POST)
-        print('-' * 20)
+        answers_english = []
+        answers_polish = []
 
-        form = request.POST['text']
-        print(form)
-        print('-' * 20)
-        form = request.POST['text']
-        print(form)
-        print('-' * 20)
-        answer_1 = request.POST[words_all[0].english_word]
-        print(answer_1)
-        print('-' * 20)
+        for current_word in words_all:
+            answers_english.append(
+                Answer(word=current_word, language="english", text=request.POST[current_word.polish_word])
+            )
+            answers_polish.append(
+                Answer(word=current_word, language="polish", text=request.POST[current_word.english_word])
+            )
+
+        for answer in answers_english:
+            answer.save()
+        for answer in answers_polish:
+            answer.save()
+
+        print(len(answers_english))
+
+        return render(
+            request,
+            "learning_app/exercise_answer.html",
+            {
+                "answers_english": answers_english,
+                "answers_polish": answers_polish
+            }
+        )
 
     else:
         # words_all = Word.objects.all()

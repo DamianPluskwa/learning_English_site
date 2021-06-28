@@ -1,0 +1,25 @@
+{% extends "learning_app/base.html" %}
+
+{% block title %}Exercise answer{% endblock %}
+
+{% block content %}
+<h1>Exercise answer</h1>
+<ul>
+    {% for answer in answers_english %}
+        <li>
+            <p> {{ answer.word.english_word }} : {{ answer.text }} : {{ answer.is_valid }}</p>
+        </li>
+    {% endfor %}
+</ul>
+
+<hr>
+
+<ul>
+    {% for answer in answers_polish %}
+        <li>
+            <p> {{ answer.word.polish_word }} : {{ answer.text }} : {{ answer.is_valid }}</p>
+        </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}
