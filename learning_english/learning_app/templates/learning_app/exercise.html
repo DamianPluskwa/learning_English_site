@@ -1,0 +1,41 @@
+{% extends "learning_app/base.html" %}
+
+{% block title %}Zadania{% endblock %}
+
+{% block content %}
+<h1>Zadania</h1>
+
+{% if words %}
+<form method="post">
+    <fieldset>
+        {% csrf_token %}
+        <h2>Podaj wyraz angielski</h2>
+        <ul>
+            {% for word in words %}
+            <li>
+                <legend>{{ word.polish_word }}</legend>
+                <input type="text" name="{{ word.polish_word }}">
+            </li>
+            {% endfor %}
+        </ul>
+
+        <hr>
+
+        <h2>Podaj wyraz polski</h2>
+        <ul>
+            {% for word in words %}
+            <li>
+                <legend>{{ word.english_word }}</legend>
+                <input type="text" name="{{ word.english_word }}">
+            </li>
+            {% endfor %}
+        </ul>
+        <input type="submit" value="Wyślij">
+    </fieldset>
+</form>
+
+{% else %}
+<h2>Brak zadań na dzisiaj</h2>
+{% endif %}
+
+{% endblock %}

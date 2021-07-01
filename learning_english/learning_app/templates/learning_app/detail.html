@@ -1,0 +1,11 @@
+{% extends "learning_app/base.html" %}
+
+{% block title %}Detail{% endblock %}
+
+{% block content %}
+
+<h1>{{ word }}</h1>
+
+<p><a href="{% url 'learning_app:menu' %}">Menu</a></p>
+
+{% endblock %}
