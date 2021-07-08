@@ -6,15 +6,15 @@
 <h1>Zadania</h1>
 
 {% if words %}
-<form method="post">
+<form method="post" autocomplete="off">
     <fieldset>
         {% csrf_token %}
         <h2>Podaj wyraz angielski</h2>
         <ul>
             {% for word in words %}
             <li>
-                <legend>{{ word.polish_word }}</legend>
-                <input type="text" name="{{ word.polish_word }}">
+                <legend for="{{ word.polish_word }}">{{ word.polish_word }}</legend>
+                <input type="text" id="{{ word.polish_word }}" name="{{ word.polish_word }}">
             </li>
             {% endfor %}
         </ul>
