@@ -11,6 +11,7 @@ def menu(request):
         {}
     )
 
+
 def word_list(request):
     words_all = Word.objects.all()
 
