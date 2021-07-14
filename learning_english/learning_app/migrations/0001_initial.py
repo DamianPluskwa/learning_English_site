@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('language', models.CharField(max_length=100)),
                 ('text', models.CharField(max_length=100)),
-                ('data', models.DateTimeField(auto_now_add=True)),
+                ('date', models.DateTimeField(auto_now_add=True)),
                 ('word', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='learning_app.word')),
             ],
         ),

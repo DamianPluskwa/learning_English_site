@@ -16,10 +16,10 @@ class Answer(models.Model):
     word = models.ForeignKey(Word, on_delete=models.CASCADE)
     language = models.CharField(max_length=100)
     text = models.CharField(max_length=100)
-    data = models.DateTimeField(auto_now_add=True)
+    date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.word} {self.text} {self.language} {self.data} {self.is_correct}"
+        return f"{self.word} {self.text} {self.language} {self.date} {self.is_correct}"
 
     @property
     def is_correct(self):
