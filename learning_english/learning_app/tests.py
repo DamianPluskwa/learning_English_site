@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.urls import reverse
 from django.utils import timezone
 
 from .models import Word, Answer
@@ -60,3 +61,41 @@ class AnswerModelTests(TestCase):
         answer = Answer(word=word, language='', text='english')
         with self.assertRaises(ValueError):
             a = answer.is_correct
+
+
+class MenuViewTest(TestCase):
+
+    def test_menu_contains(self):
+        response = self.client.get(reverse('learning_app:menu'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Menu")
+        self.assertContains(response, "Lista wyrazów")
+        self.assertContains(response, "Zadania")
+        self.assertContains(response, "Wprowadzenie nowego wyrazu")
+
+
+class WordListViewTest(TestCase):
+
+    def test_no_words(self):
+        response = self.client.get(reverse('learning_app:word_list'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Brak wyrazów w słowniku')
+        self.assertQuerysetEqual(response.context['page_obj'], [])
+
+    def test_one_word(self):
+        word = Word.objects.create(english_word='english', polish_word='angielski')
+        response = self.client.get(reverse('learning_app:word_list'))
+        self.assertEqual(response.status_code, 200)
+        self.assertQuerysetEqual(
+            response.context['page_obj'],
+            [word]
+        )
+
+    def test_more_then_twenty_words(self):
+        for _ in range(21):
+            Word.objects.create(english_word='english', polish_word='angielski')
+        response = self.client.get(reverse('learning_app:word_list'))
+        self.assertEqual(
+            len(response.context['page_obj']),
+            20
+        )
