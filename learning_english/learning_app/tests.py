@@ -99,3 +99,37 @@ class WordListViewTest(TestCase):
             len(response.context['page_obj']),
             20
         )
+
+
+class DetailViewTest(TestCase):
+
+    def test_correct_id(self):
+        word = Word.objects.create(english_word='english', polish_word='angielski')
+        url = reverse('learning_app:detail', args=(word.id,))
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['word'], word)
+        self.assertContains(response, "english")
+        self.assertContains(response, "angielski")
+        self.assertContains(response, "Menu")
+
+    def test_incorrect_id(self):
+        url = reverse('learning_app:detail', args=(1,))
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+
+
+class ExerciseViewTest(TestCase):
+    def test_no_words(self):
+        response = self.client.get(reverse('learning_app:exercise'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Brak zadań na dzisiaj')
+        self.assertQuerysetEqual(response.context['words'], [])
+
+    def test_one_word(self):
+        word = Word.objects.create(english_word='english', polish_word='angielski')
+        response = self.client.get(reverse('learning_app:exercise'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'english')
+        self.assertContains(response, 'angielski')
+        self.assertQuerysetEqual(response.context['words'], [word])

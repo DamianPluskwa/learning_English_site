@@ -36,9 +36,9 @@ def detail(request, word_id):
 
 
 def exercise(request):
-    if request.method == 'POST':
-        words_all = (Word.objects.get(id=1), Word.objects.get(id=2))
+    words_all = Word.objects.all()
 
+    if request.method == 'POST':
         answers_english = []
         answers_polish = []
 
@@ -67,9 +67,7 @@ def exercise(request):
         )
 
     else:
-        # words_all = Word.objects.all()
-
-        words_all = (Word.objects.get(id=1), Word.objects.get(id=2))
+        pass
 
     return render(
         request,
