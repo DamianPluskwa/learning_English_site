@@ -1,6 +1,8 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
+from datetime import timedelta
+
 
 from .models import Word, Answer
 
@@ -133,3 +135,25 @@ class ExerciseViewTest(TestCase):
         self.assertContains(response, 'english')
         self.assertContains(response, 'angielski')
         self.assertQuerysetEqual(response.context['words'], [word])
+
+    def test_one_word_answer(self):
+        word = Word.objects.create(english_word='english', polish_word='angielski')
+        response = self.client.post("/exercise/", {'angielski': 'english', 'english': 'angielski'})
+        time = timezone.now()
+
+        answer_all = Answer.objects.all()
+
+        self.assertIs(len(answer_all), 2)
+
+        self.assertEqual(answer_all[0].word, word)
+        self.assertEqual(answer_all[0].language, 'english')
+        self.assertEqual(answer_all[0].text, 'english')
+        self.assertIs(answer_all[0].date <= time, True)
+        self.assertIs(answer_all[0].date + timedelta(minutes=1) >= time, True)
+
+        self.assertEqual(answer_all[1].word, word)
+        self.assertEqual(answer_all[1].language, 'polish')
+        self.assertEqual(answer_all[1].text, 'angielski')
+        self.assertIs(answer_all[1].date <= time, True)
+        self.assertIs(answer_all[1].date + timedelta(minutes=1) >= time, True)
+
