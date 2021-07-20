@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.utils import timezone
 from datetime import timedelta
 
-
+from .forms import WordForm
 from .models import Word, Answer
 
 
@@ -17,7 +17,7 @@ class WordModelTests(TestCase):
         word = Word(english_word='english', polish_word='angielski')
         self.assertEqual(str(word), 'english 1 - 1 angielski')
 
-    def test_every_attribute(self):
+    def test_all_attributes(self):
         word = Word(english_word='english', polish_word='angielski')
         self.assertEqual(word.english_word, 'english')
         self.assertEqual(word.polish_word, 'angielski')
@@ -156,4 +156,48 @@ class ExerciseViewTest(TestCase):
         self.assertEqual(answer_all[1].text, 'angielski')
         self.assertIs(answer_all[1].date <= time, True)
         self.assertIs(answer_all[1].date + timedelta(minutes=1) >= time, True)
+
+
+class WordFormTest(TestCase):
+    def test_create_instance_of_word_form(self):
+        form = WordForm()
+        self.assertIsInstance(form, WordForm)
+
+    def test_valid_data(self):
+        form_data = {'english_word': 'english', 'polish_word': 'angielski'}
+        form = WordForm(data=form_data)
+        self.assertTrue(form.is_valid())
+        self.assertEqual(form.cleaned_data['english_word'], 'english')
+        self.assertEqual(form.cleaned_data['polish_word'], 'angielski')
+
+    def test_unvalid_data(self):
+        form_data1 = {'english_word': 'english'}
+        form_data2 = {'polish_word': 'angielski'}
+        form_data3 = {}
+
+        form1 = WordForm(data=form_data1)
+        form2 = WordForm(data=form_data2)
+        form3 = WordForm(data=form_data3)
+
+        self.assertFalse(form1.is_valid())
+        self.assertFalse(form2.is_valid())
+        self.assertFalse(form3.is_valid())
+
+    def test_empty_string(self):
+        form_data1 = {'english_word': 'english', 'polish_word': ''}
+        form_data2 = {'english_word': '',        'polish_word': 'angielski'}
+        form_data3 = {'english_word': '',        'polish_word': ''}
+
+        form1 = WordForm(data=form_data1)
+        form2 = WordForm(data=form_data2)
+        form3 = WordForm(data=form_data3)
+
+        self.assertFalse(form1.is_valid())
+        self.assertFalse(form2.is_valid())
+        self.assertFalse(form3.is_valid())
+
+
+
+
+
 
