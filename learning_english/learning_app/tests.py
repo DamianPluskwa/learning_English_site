@@ -170,7 +170,7 @@ class WordFormTest(TestCase):
         self.assertEqual(form.cleaned_data['english_word'], 'english')
         self.assertEqual(form.cleaned_data['polish_word'], 'angielski')
 
-    def test_unvalid_data(self):
+    def test_invalid_data(self):
         form_data1 = {'english_word': 'english'}
         form_data2 = {'polish_word': 'angielski'}
         form_data3 = {}
@@ -197,6 +197,42 @@ class WordFormTest(TestCase):
         self.assertFalse(form3.is_valid())
 
 
+class NewWordViewTest(TestCase):
+    def test_site_contains(self):
+        response = self.client.get(reverse('learning_app:new_word'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Nowy wyraz")
+        self.assertContains(response, "Słowo angielskie:")
+        self.assertContains(response, "Słowo polskie:")
+
+    def test_valid_word(self):
+
+        form_data = {'english_word': 'english', 'polish_word': 'angielski'}
+        response = self.client.post("/new_word/", form_data)
+
+        word = Word(english_word='english', polish_word='angielski')
+        new_word = Word.objects.all()
+
+        self.assertContains(response, f"Dodano wyraz '{word}'do bazy wyrazów.")
+        self.assertEqual(len(new_word), 1)
+        self.assertEqual(new_word[0], word)
+
+    def test_invalid_data(self):
+        form_data = [
+            {'english_word': '', 'polish_word': ''},
+            {'english_word': 'english', 'polish_word': ''},
+            {'english_word': '', 'polish_word': 'angielski'}
+        ]
+        for i in range(3):
+            response = self.client.post("/new_word/", form_data[i])
+
+            self.assertContains(response, "Nowy wyraz")
+            self.assertContains(response, "Słowo angielskie:")
+            self.assertContains(response, "Słowo polskie:")
+            self.assertContains(response, "Nieprawidłowe dane. Spróbuj ponownie.")
+
+            new_word = Word.objects.all()
+            self.assertQuerysetEqual(new_word, [])
 
 
 
