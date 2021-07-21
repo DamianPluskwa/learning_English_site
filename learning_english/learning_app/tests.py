@@ -185,8 +185,8 @@ class WordFormTest(TestCase):
 
     def test_empty_string(self):
         form_data1 = {'english_word': 'english', 'polish_word': ''}
-        form_data2 = {'english_word': '',        'polish_word': 'angielski'}
-        form_data3 = {'english_word': '',        'polish_word': ''}
+        form_data2 = {'english_word': '', 'polish_word': 'angielski'}
+        form_data3 = {'english_word': '', 'polish_word': ''}
 
         form1 = WordForm(data=form_data1)
         form2 = WordForm(data=form_data2)
@@ -206,16 +206,15 @@ class NewWordViewTest(TestCase):
         self.assertContains(response, "Słowo polskie:")
 
     def test_valid_word(self):
-
         form_data = {'english_word': 'english', 'polish_word': 'angielski'}
         response = self.client.post("/new_word/", form_data)
 
         word = Word(english_word='english', polish_word='angielski')
         new_word = Word.objects.all()
 
-        self.assertContains(response, f"Dodano wyraz '{word}'do bazy wyrazów.")
         self.assertEqual(len(new_word), 1)
         self.assertEqual(new_word[0], word)
+        self.assertContains(response, f"Dodano wyraz '{word}'do bazy wyrazów.")
 
     def test_invalid_data(self):
         form_data = [
@@ -233,7 +232,3 @@ class NewWordViewTest(TestCase):
 
             new_word = Word.objects.all()
             self.assertQuerysetEqual(new_word, [])
-
-
-
-

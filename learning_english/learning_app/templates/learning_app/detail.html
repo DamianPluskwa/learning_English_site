@@ -6,6 +6,9 @@
 
 <h1>{{ word }}</h1>
 
+{% if message %}
+<p>Dodano wyraz '{{ word }}'do bazy wyrazów.</p>
+{% endif %}
 <p><a href="{% url 'learning_app:menu' %}">Menu</a></p>
 
 {% endblock %}

@@ -1,6 +1,7 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
 
+from .forms import WordForm
 from .models import Word, Answer
 
 
@@ -74,5 +75,34 @@ def exercise(request):
         "learning_app/exercise.html",
         {
             "words": words_all
+        }
+    )
+
+
+def new_word(request):
+    if request.method == 'POST':
+        form = WordForm(request.POST)
+        message = True
+        if form.is_valid():
+            word = Word(english_word=form.cleaned_data['english_word'], polish_word=form.cleaned_data['polish_word'])
+            word.save()
+            return render(
+                request,
+                "learning_app/detail.html",
+                {
+                    "word": word,
+                    "message": message
+                }
+            )
+
+    else:
+        form = WordForm()
+        message = False
+    return render(
+        request,
+        "learning_app/new_word.html",
+        {
+            'form': form,
+            'message': message
         }
     )

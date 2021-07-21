@@ -1,0 +1,27 @@
+{% extends "learning_app/base.html" %}
+
+{% block title %}Nowy wyraz{% endblock %}
+
+{% block content %}
+
+<h1> Nowy wyraz </h1>
+
+{% if message %}
+<p>Nieprawidłowe dane. Spróbuj ponownie.</p>
+<br>
+{% endif %}
+
+{% if form %}
+<form method="post" autocomplete="off">
+    <fieldset>
+        {% csrf_token %}
+        {{ form }}
+        <br>
+        <input type="submit" value="Wyślij">
+    </fieldset>
+</form>
+{% endif %}
+
+<p><a href="{% url 'learning_app:menu' %}">Menu</a></p>
+
+{% endblock %}
