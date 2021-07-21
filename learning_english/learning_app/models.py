@@ -11,6 +11,20 @@ class Word(models.Model):
         return f"{self.english_word} {self.level_of_knowledge_english} -" \
                f" {self.level_of_knowledge_polish} {self.polish_word}"
 
+    def __eq__(self, other):
+        if not (isinstance(self, Word) and isinstance(other, Word)):
+            return False
+        elif self.polish_word != other.polish_word:
+            return False
+        elif self.english_word != other.english_word:
+            return False
+        elif self.level_of_knowledge_english != other.level_of_knowledge_english:
+            return False
+        elif self.level_of_knowledge_polish != other.level_of_knowledge_polish:
+            return False
+        else:
+            return True
+
 
 class Answer(models.Model):
     word = models.ForeignKey(Word, on_delete=models.CASCADE)

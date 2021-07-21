@@ -24,6 +24,25 @@ class WordModelTests(TestCase):
         self.assertEqual(word.level_of_knowledge_english, 1)
         self.assertEqual(word.level_of_knowledge_polish, 1)
 
+    def test_equal_word(self):
+        word_1 = Word(english_word='english', polish_word='angielski')
+        word_2 = Word(english_word='english', polish_word='angielski')
+
+        self.assertEqual(word_1, word_2)
+
+    def test_not_equal_word(self):
+
+        word_1 = [
+            Word(english_word='', polish_word='angielski'),
+            Word(english_word='english', polish_word=''),
+            Word(english_word='english', polish_word='angielski', level_of_knowledge_english=2),
+            Word(english_word='english', polish_word='angielski', level_of_knowledge_polish=2)
+        ]
+        word_2 = Word(english_word='english', polish_word='angielski')
+
+        for i in range(len(word_1)):
+            self.assertNotEqual(word_1[i], word_2)
+
 
 class AnswerModelTests(TestCase):
 
