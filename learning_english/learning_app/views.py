@@ -4,10 +4,10 @@ from django.shortcuts import render, get_object_or_404
 from .models import Word, Answer
 
 
-def menu(request):
+def index(request):
     return render(
         request,
-        "learning_app/menu.html",
+        "learning_app/index.html",
         {}
     )
 
