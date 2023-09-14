@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'learning_app.apps.LearningAppConfig',
+    'words_database_app.apps.WordsDatabaseAppConfig',
 ]
 
 MIDDLEWARE = [
